@@ -6,7 +6,9 @@ import numpy as npy
 from vpython import *
 import linecache
 
-no_of_sats = linecache.getline("./In/satData.txt",9)
+fns.printBanner()
+
+no_of_sats = linecache.getline("./In/satData.txt",10)
 no_of_sats = no_of_sats.strip()
 no_of_sats = int(no_of_sats[17:])
 
@@ -15,6 +17,7 @@ inc_s = [None]*no_of_sats
 e_s = [None]*no_of_sats
 prd_s = []
 name_s = [None]*no_of_sats
+color_s = [None]*no_of_sats
 
 end = 0
 i = 0
@@ -26,20 +29,21 @@ while i==0:
 	if lin == "EOF":
 		i = 1
 
-cursor_srt = 13
-blockSize = 7
+cursor_srt = 14
+blockSize = 8
 for i in range(0,no_of_sats):
 	cursor = cursor_srt	
-	[name_s[i],r_periG_s[i],e_s[i],inc_s[i]] = fns.grabData("./In/satData.txt",cursor)
+	[name_s[i],r_periG_s[i],e_s[i],inc_s[i],color_s[i]] = fns.grabData("./In/satData.txt",cursor)
 	cursor_srt = cursor_srt + blockSize
 
 for i in range(0,no_of_sats):
 	prd_s.append(round(fns.period(r_periG_s[i]/(1 - e_s[i]))))
 	
 
-	
-ip4 = float(input("Duration of simulation in orbital time(hrs) "))
-tfinal = int(ip4*60*60)
+ip1 = input("Do you want data output ?(N/y) ")
+print()	
+ip2 = float(input("Duration of simulation in orbital time(hrs) "))
+tfinal = int(ip2*60*60)
 step = 1
 output = [None]*no_of_sats
 crdntData = [None]*no_of_sats
@@ -96,8 +100,9 @@ for i in range(0,no_of_sats):
 	crdntData[i] = crdnts.copy()
 	velData[i] = vels.copy()
 
+print("\r")
 
-if cnsts.dataOut == 1:
+if (ip1 == 'y') or (ip1 == 'Y'):
 	fns.writeOut(crdntData,name_s,"crdnts")
 	fns.writeOut(velData,name_s,"vel")
 		
@@ -111,8 +116,36 @@ for i in range(0,no_of_sats):
 	for j in range(0,len(crdntData[i])):
 		curveArr[i].append(vector(crdntData[i][j][0]/1000,crdntData[i][j][1]/1000,crdntData[i][j][2]/1000))
 		
+if cnsts.shwErth == 1:
+	erth = sphere(pos=vector(0,0,0),radius=cnsts.radEarth/1000,color=color.blue)
 
-erth = sphere(pos=vector(0,0,0),radius=cnsts.radEarth/1000,color=color.blue)
+arrow(pos=vector(0,0,0),axis=vector(10000,0,0),shaftwidth=30,color = color.cyan)
+arrow(pos=vector(0,0,0),axis=vector(0,10000,0),shaftwidth=30,color = color.green)
+arrow(pos=vector(0,0,0),axis=vector(0,0,10000),shaftwidth=30,color = color.orange)
+arrow(pos=vector(0,0,0),axis=vector(-10000,0,0),shaftwidth=30,color = color.cyan)
+arrow(pos=vector(0,0,0),axis=vector(0,-10000,0),shaftwidth=30,color = color.green)
+arrow(pos=vector(0,0,0),axis=vector(0,0,-10000),shaftwidth=30,color = color.orange)
+
+satObj = [None]*no_of_sats
+clrSat = [None]*no_of_sats
+for i in range(0,no_of_sats):
+	if color_s[i] == "red":
+		clrSat[i] = vector(255,0,0)
+	elif color_s[i] == "green":
+		clrSat[i] = vector(0,255,0)
+	elif color_s[i] == "blue":
+		clrSat[i] = vector(0,0,255)
+	else:
+		clrSat[i] = vector(255,255,255)
+	satObj[i] = sphere(pos=vector(0,0,0),radius=100,color = clrSat[i])
+
+for i in range(0,tfinal,cnsts.simStep):
+	for j in range(0,no_of_sats):
+		if i > len(crdntData[j])-1:
+			crdntData[j] = crdntData[j] + crdntData[j]
+		satObj[j].pos = vector(crdntData[j][i][0]/1000,crdntData[j][i][1]/1000,crdntData[j][i][2]/1000)
+		rate(cnsts.simSpeed)	
+
 
 
 '''

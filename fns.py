@@ -63,12 +63,35 @@ def grabData(path,cursor):
 	inc = inc.strip()
 	inc = inc[16:]
 	inc = float(inc)*(math.pi/180)
+	cursor = cursor + 1
+	color = linecache.getline(path,cursor)
+	color = color.strip()
+	color = color[15:]
 	
-	return [name,r_periG,ecc,inc]
+	return [name,r_periG,ecc,inc,color]
 
-
-
-
+def printBanner():
+	
+	print("\r")
+	print("\r")
+	print("        GGGGGGGGGGGGG                    SSSSSSSSSSSSSSS IIIIIIIIIIMMMMMMMM               MMMMMMMM")
+	print("     GGG::::::::::::G                  SS:::::::::::::::SI::::::::IM:::::::M             M:::::::M")
+	print("   GG:::::::::::::::G                 S:::::SSSSSS::::::SI::::::::IM::::::::M           M::::::::M")
+	print("  G:::::GGGGGGGG::::G                 S:::::S     SSSSSSSII::::::IIM:::::::::M         M:::::::::M")
+	print(" G:::::G       GGGGGG                 S:::::S              I::::I  M::::::::::M       M::::::::::M")
+	print("G:::::G                               S:::::S              I::::I  M:::::::::::M     M:::::::::::M")
+	print("G:::::G                                S::::SSSS           I::::I  M:::::::M::::M   M::::M:::::::M")
+	print("G:::::G    GGGGGGGGGG ---------------   SS::::::SSSSS      I::::I  M::::::M M::::M M::::M M::::::M")
+	print("G:::::G    G::::::::G -:::::::::::::-     SSS::::::::SS    I::::I  M::::::M  M::::M::::M  M::::::M")
+	print("G:::::G    GGGGG::::G ---------------        SSSSSS::::S   I::::I  M::::::M   M:::::::M   M::::::M")
+	print("G:::::G        G::::G                             S:::::S  I::::I  M::::::M    M:::::M    M::::::M")
+	print(" G:::::G       G::::G                             S:::::S  I::::I  M::::::M     MMMMM     M::::::M")
+	print("  G:::::GGGGGGGG::::G                 SSSSSSS     S:::::SII::::::IIM::::::M               M::::::M")
+	print("   GG:::::::::::::::G                 S::::::SSSSSS:::::SI::::::::IM::::::M               M::::::M")
+	print("     GGG::::::GGG:::G                 S:::::::::::::::SS I::::::::IM::::::M               M::::::M")
+	print("        GGGGGG   GGGG                  SSSSSSSSSSSSSSS   IIIIIIIIIIMMMMMMMM               MMMMMMMM")
+	print("\r")                                                                                                 
+	print("\r")                                                                                          
 
 
 
