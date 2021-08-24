@@ -3,31 +3,47 @@ import cnsts
 import fns
 import matplotlib.pyplot as grafik
 import numpy as npy
+from vpython import *
+import linecache
 
-no_of_sats = int(input("How many satellites needed: "))
+no_of_sats = linecache.getline("./In/satData.txt",9)
+no_of_sats = no_of_sats.strip()
+no_of_sats = int(no_of_sats[17:])
 
-r_periG_s = []
-inc_s = []
-e_s = []
+r_periG_s = [None]*no_of_sats
+inc_s = [None]*no_of_sats
+e_s = [None]*no_of_sats
 prd_s = []
-name_s = []
+name_s = [None]*no_of_sats
+
+end = 0
+i = 0
+ipFile = open("./In/satData.txt",'r')
+while i==0:
+	end = end + 1
+	lin = ipFile.readline()
+	lin = lin.strip()
+	if lin == "EOF":
+		i = 1
+
+cursor_srt = 13
+blockSize = 7
+for i in range(0,no_of_sats):
+	cursor = cursor_srt	
+	[name_s[i],r_periG_s[i],e_s[i],inc_s[i]] = fns.grabData("./In/satData.txt",cursor)
+	cursor_srt = cursor_srt + blockSize
 
 for i in range(0,no_of_sats):
-	ip0 = input("Satellite name: ")
-	name_s.append(ip0)
-	ip1 = float(input("Perigee altitude of " + ip0 + " (kms): "))
-	r_periG_s.append(ip1*1000 + cnsts.radEarth)
-	ip2 = float(input("Orbit inclination of " + ip0 + " (deg): "))
-	inc_s.append(ip2*math.pi/180)
-	ip3 = float(input("Orbit eccentricity of " + ip0 + " (0-1): "))
-	e_s.append(ip3)
 	prd_s.append(round(fns.period(r_periG_s[i]/(1 - e_s[i]))))
+	
 
 	
 ip4 = float(input("Duration of simulation in orbital time(hrs) "))
 tfinal = int(ip4*60*60)
 step = 1
 output = [None]*no_of_sats
+crdntData = [None]*no_of_sats
+velData = [None]*no_of_sats
 print()
 print()
 
@@ -39,6 +55,8 @@ for i in range(0,no_of_sats):
 	prd = prd_s[i]	
 	
 	stateout = [None]*prd
+	crdnts = [None]*prd
+	vels = [None]*prd
 	rp = [r_periG,0,0]
 	rpMod = fns.norm(rp)
 	a = r_periG/(1 - e)
@@ -51,6 +69,8 @@ for i in range(0,no_of_sats):
 		tempstate = state.copy()		
 		k = [None]*len(state)		
 		stateout[z] = state.copy()
+		crdnts[z] = state[0:3].copy()
+		vels[z] = state[3:6].copy()
 		k1 = fns.prop(state)
 		for l in range(0,len(state)):
 			tempstate[l] = state[l] + (k1[l]*step/2)
@@ -73,14 +93,29 @@ for i in range(0,no_of_sats):
 		
 
 	output[i] = stateout.copy()
+	crdntData[i] = crdnts.copy()
+	velData[i] = vels.copy()
 
-writeData = output.copy()
+
 if cnsts.dataOut == 1:
-	fns.writeOut(writeData,name_s)
-del writeData		
+	fns.writeOut(crdntData,name_s,"crdnts")
+	fns.writeOut(velData,name_s,"vel")
+		
 
-[Xdata_erth,Ydata_erth,Zdata_erth] = fns.mkEarth()
 
+scene = canvas(title='\t\t\tSIMULATION\t\t\t',width=1900,height=1000)
+
+curveArr = [None]*no_of_sats
+for i in range(0,no_of_sats):
+	curveArr[i] = curve()
+	for j in range(0,len(crdntData[i])):
+		curveArr[i].append(vector(crdntData[i][j][0]/1000,crdntData[i][j][1]/1000,crdntData[i][j][2]/1000))
+		
+
+erth = sphere(pos=vector(0,0,0),radius=cnsts.radEarth/1000,color=color.blue)
+
+
+'''
 fig = grafik.figure()
 mainPlt = fig.add_subplot(projection ='3d')
 
@@ -127,7 +162,7 @@ del pltCltn
 
 
 grafik.show()
-
+'''
 
 
 

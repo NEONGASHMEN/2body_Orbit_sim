@@ -1,6 +1,7 @@
 import math
 import cnsts
 import numpy as np
+import linecache
 
 def velocityMod(rMod,a):
 	return math.sqrt(cnsts.muEarth*((2/rMod) - (1/a)))
@@ -34,14 +35,41 @@ def mkEarth():
 	z = 6378 * np.outer(np.ones(np.size(u)), np.cos(v))
 	return [x,y,z]
 
-def writeOut(writeData,name_s):
+def writeOut(writeData,name_s,title):
 	for i in range(0,len(writeData)):
-		outNm = str(name_s[i] + ".txt")		
+		outNm = str("./Out/" + name_s[i] + "_" + title + ".txt")		
 		out = open(outNm,'w')
-		out.write("x\t\t\ty\t\t\tz\t\t\tVx\t\t\tVy\t\t\tVz\r")
 		for j in range(0,len(writeData[i])):
 			out.write(str(writeData[i][j]))
 			out.write("\r")
 		out.close()
 	
+def grabData(path,cursor):
+	name = 	linecache.getline(path,cursor)
+	name = name.strip()
+	name = name[21:]
+	cursor = cursor + 1
+	r_periG = linecache.getline(path,cursor)
+	r_periG = r_periG.strip()
+	r_periG = r_periG[20:]
+	r_periG = float(r_periG)*1000 + cnsts.radEarth
+	cursor = cursor + 1
+	ecc = linecache.getline(path,cursor)
+	ecc = ecc.strip()
+	ecc = ecc[17:]
+	ecc = float(ecc)
+	cursor = cursor + 1
+	inc = linecache.getline(path,cursor)
+	inc = inc.strip()
+	inc = inc[16:]
+	inc = float(inc)*(math.pi/180)
+	
+	return [name,r_periG,ecc,inc]
+
+
+
+
+
+
+
 
