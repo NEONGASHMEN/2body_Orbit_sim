@@ -5,10 +5,10 @@
 ## **USAGE:**
 ______________
 
+* `pip3 install vpython`
 * `python3 main.py`
-*  Enter satellite parameters
+*  Enter satellite parameters in `/In/satData.txt`
 *  Change planet parameters and simulation speed inside `cnsts.py`
-*  Add or remove color schemes in `cnsts.py`
 *  Set `dataOut = 1` to write the kinematic data of the satellites to a text file
 
 ______________
