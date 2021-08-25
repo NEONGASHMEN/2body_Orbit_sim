@@ -105,7 +105,7 @@ print("\r")
 if (ip1 == 'y') or (ip1 == 'Y'):
 	fns.writeOut(crdntData,name_s,"crdnts")
 	fns.writeOut(velData,name_s,"vel")
-		
+	print("\rData written in ./Out/")
 
 
 scene = canvas(title='\t\t\tSIMULATION\t\t\t',width=1900,height=1000)
@@ -137,65 +137,14 @@ for i in range(0,no_of_sats):
 		clrSat[i] = vector(0,0,255)
 	else:
 		clrSat[i] = vector(255,255,255)
-	satObj[i] = sphere(pos=vector(0,0,0),radius=100,color = clrSat[i])
+	satObj[i] = box(pos=vector(0,0,0),length=100,height=100,width=100,color = clrSat[i])
 
 for i in range(0,tfinal,cnsts.simStep):
 	for j in range(0,no_of_sats):
 		if i > len(crdntData[j])-1:
 			crdntData[j] = crdntData[j] + crdntData[j]
 		satObj[j].pos = vector(crdntData[j][i][0]/1000,crdntData[j][i][1]/1000,crdntData[j][i][2]/1000)
-		rate(cnsts.simSpeed)	
-
-
-
-'''
-fig = grafik.figure()
-mainPlt = fig.add_subplot(projection ='3d')
-
-if cnsts.shwErth == 1:
-	mainPlt.plot_surface(Xdata_erth,Ydata_erth,Zdata_erth,color='#89CFF0',alpha=0.8,zorder=50)
-
-mainPlt.scatter(0,0,0,color='black',zorder=0)
-
-axisDist = (cnsts.radEarth/1000) + 2000
-mainPlt.plot([-axisDist,axisDist],[0,0],[0,0],label='X')
-mainPlt.plot([0,0],[-axisDist,axisDist],[0,0],label='Y')
-mainPlt.plot([0,0],[0,0],[-axisDist,axisDist],label='Z')
-
-
-for j in range(0,no_of_sats):
-
-	Xdata_orb = []
-	Ydata_orb = []
-	Zdata_orb = []
-	for i in range(0,prd_s[j]):
-		Xdata_orb.append(output[j][i][0]/1000)
-		Ydata_orb.append(output[j][i][1]/1000)
-		Zdata_orb.append(output[j][i][2]/1000)
-	
-	
-	mainPlt.plot3D(Xdata_orb,Ydata_orb,Zdata_orb,zorder=20,color=cnsts.satColor[j],label=name_s[j])
-
-pltCltn = [None]*no_of_sats
-pltMat = output.copy()
-mainPlt.legend()
-
-for i in range(0,tfinal,cnsts.simSpeed):
-	
-	for j in range(0,no_of_sats):
-		if i > len(pltMat[j])-1:
-			pltMat[j] = pltMat[j] + pltMat[j]
-		pltCltn[j] = mainPlt.scatter(pltMat[j][i][0]/1000,pltMat[j][i][1]/1000,pltMat[j][i][2]/1000,color=cnsts.satColor[j],zorder=10)
-
-	grafik.pause(0.00000001)
-	for j in range(0,no_of_sats):
-		pltCltn[j].remove()
-
-del pltCltn
-
-
-grafik.show()
-'''
+		rate(cnsts.simSpeed)
 
 
 
