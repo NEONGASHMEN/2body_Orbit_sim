@@ -1,4 +1,4 @@
-# 2body_Orbit_sim
+# G-SIM
 
 ## Simulate multiple satellite orbits over a planet
 
