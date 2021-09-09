@@ -2,6 +2,7 @@ import math
 import cnsts
 import numpy as np
 import linecache
+from vpython import vector
 
 def velocityMod(rMod,a):
 	return math.sqrt(cnsts.muEarth*((2/rMod) - (1/a)))
@@ -63,13 +64,22 @@ def grabData(path,cursor):
 	inc = inc.strip()
 	inc = inc[16:]
 	inc = float(inc)*(math.pi/180)
-	cursor = cursor + 1
-	color = linecache.getline(path,cursor)
-	color = color.strip()
-	color = color[15:]
 	
-	return [name,r_periG,ecc,inc,color]
+	return [name,r_periG,ecc,inc]
 
+def colorConv(color_s):
+	clrSat = [None]*len(color_s)
+	for i in range(0,len(color_s)):
+		if color_s[i] == "red":
+			clrSat[i] = vector(255,0,0)
+		elif color_s[i] == "green":
+			clrSat[i] = vector(0,255,0)
+		elif color_s[i] == "blue":
+			clrSat[i] = vector(0,0,255)
+		else:
+			clrSat[i] = vector(255,255,255)
+	return clrSat
+	
 def printBanner():
 	
 	print("\r")

@@ -14,8 +14,7 @@ No of satellites:2
 Name of satellite			:sat1	
 Perigee altitude			:500	
 Eccentricity				:0	
-Inclination				:20
-Sim colour				:red	
+Inclination				:20	
 
 ################################################################
 
@@ -23,7 +22,6 @@ Name of satellite			:sat2
 Perigee altitude			:600	
 Eccentricity				:0.2	
 Inclination				:80	
-Sim colour				:green
 
 ################################################################
 EOF

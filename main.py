@@ -30,10 +30,10 @@ while i==0:
 		i = 1
 
 cursor_srt = 14
-blockSize = 8
+blockSize = 7
 for i in range(0,no_of_sats):
 	cursor = cursor_srt	
-	[name_s[i],r_periG_s[i],e_s[i],inc_s[i],color_s[i]] = fns.grabData("./In/satData.txt",cursor)
+	[name_s[i],r_periG_s[i],e_s[i],inc_s[i]] = fns.grabData("./In/satData.txt",cursor)
 	cursor_srt = cursor_srt + blockSize
 
 for i in range(0,no_of_sats):
@@ -107,8 +107,11 @@ if (ip1 == 'y') or (ip1 == 'Y'):
 	fns.writeOut(velData,name_s,"vel")
 	print("\rData written in ./Out/")
 
+txt2shw = ""
+for i in range(0,no_of_sats):
+	txt2shw = txt2shw + '\n\t'+'<b style="color:'+cnsts.color_s[i]+'">'+(cnsts.color_s[i]).capitalize()+'</b>'+'  :  '+name_s[i]
 
-scene = canvas(title='\t\t\tSIMULATION\t\t\t',width=1900,height=1000)
+scene1 = canvas(title=' SIMULATION',width=1550,height=920,align='left',caption=txt2shw)
 
 curveArr = [None]*no_of_sats
 for i in range(0,no_of_sats):
@@ -127,17 +130,10 @@ arrow(pos=vector(0,0,0),axis=vector(0,-10000,0),shaftwidth=30,color = color.gree
 arrow(pos=vector(0,0,0),axis=vector(0,0,-10000),shaftwidth=30,color = color.orange)
 
 satObj = [None]*no_of_sats
-clrSat = [None]*no_of_sats
+clrSat = fns.colorConv(cnsts.color_s)
 for i in range(0,no_of_sats):
-	if color_s[i] == "red":
-		clrSat[i] = vector(255,0,0)
-	elif color_s[i] == "green":
-		clrSat[i] = vector(0,255,0)
-	elif color_s[i] == "blue":
-		clrSat[i] = vector(0,0,255)
-	else:
-		clrSat[i] = vector(255,255,255)
 	satObj[i] = box(pos=vector(0,0,0),length=100,height=100,width=100,color = clrSat[i])
+
 
 for i in range(0,tfinal,cnsts.simStep):
 	for j in range(0,no_of_sats):
