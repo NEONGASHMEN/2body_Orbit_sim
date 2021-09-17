@@ -108,10 +108,14 @@ if (ip1 == 'y') or (ip1 == 'Y'):
 	print("\rData written in ./Out/")
 
 txt2shw = ""
+satclrTxt = ""
 for i in range(0,no_of_sats):
 	txt2shw = txt2shw + '\n\t'+'<b style="color:'+cnsts.color_s[i]+'">'+(cnsts.color_s[i]).capitalize()+'</b>'+'  :  '+name_s[i]
+	satclrTxt = satclrTxt + "\n" + name_s[i] + " : " + (cnsts.color_s[i]).capitalize()
+	
+scene1 = canvas(title=' SIMULATION',width=1900,height=1000,align='left')
 
-scene1 = canvas(title=' SIMULATION',width=1550,height=920,align='left',caption=txt2shw)
+fns.popUp(grafik,1,satclrTxt,no_of_sats)
 
 curveArr = [None]*no_of_sats
 for i in range(0,no_of_sats):
@@ -120,7 +124,7 @@ for i in range(0,no_of_sats):
 		curveArr[i].append(vector(crdntData[i][j][0]/1000,crdntData[i][j][1]/1000,crdntData[i][j][2]/1000))
 		
 if cnsts.shwErth == 1:
-	erth = sphere(pos=vector(0,0,0),radius=cnsts.radEarth/1000,color=color.blue)
+	erth = sphere(pos=vector(0,0,0),radius=cnsts.radEarth/1000,texture=textures.earth)
 
 arrow(pos=vector(0,0,0),axis=vector(10000,0,0),shaftwidth=30,color = color.cyan)
 arrow(pos=vector(0,0,0),axis=vector(0,10000,0),shaftwidth=30,color = color.green)
@@ -143,10 +147,7 @@ for i in range(0,tfinal,cnsts.simStep):
 		rate(cnsts.simSpeed)
 
 
-
-
-
-
+grafik.show()
 
 
 

@@ -44,6 +44,16 @@ def writeOut(writeData,name_s,title):
 			out.write(str(writeData[i][j]))
 			out.write("\r")
 		out.close()
+
+def popUp(grafik,n,txt,no):
+	grafik.figure(n,figsize=(3,n-0.5))
+	grafik.xlim([0,10])
+	grafik.ylim([0,10])
+	grafik.text(0,0,txt,fontsize=13)
+	grafik.grid(False)
+	grafik.axis('off')
+	grafik.pause(0.001)
+	grafik.show(block=False)
 	
 def grabData(path,cursor):
 	name = 	linecache.getline(path,cursor)
