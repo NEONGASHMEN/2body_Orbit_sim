@@ -3,7 +3,8 @@
 ################################################################
 # 1. Distances in kilometers				       #
 # 2. Angles in degrees					       #
-# 3. Available colors: red,green,blue			       #
+# 3. Default residual omega after orbit insertion = 10deg/s    #
+# 4. Don't change the formatting (eg. for 9.831 use 09.83)     #
 ################################################################
 #..............................................................#
 
@@ -15,6 +16,7 @@ Name of satellite			:sat1
 Perigee altitude			:500	
 Eccentricity				:0	
 Inclination				:20	
+Omega res				:10.00 10.00 10.00
 
 ################################################################
 
@@ -22,6 +24,7 @@ Name of satellite			:sat2
 Perigee altitude			:600	
 Eccentricity				:0.2	
 Inclination				:80	
+Omega res				:10.00 10.00 10.00
 
 ################################################################
 EOF

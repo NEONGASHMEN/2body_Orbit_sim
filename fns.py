@@ -22,7 +22,9 @@ def prop(state):
 		
 		acc.append((-1)*(cnsts.muEarth/(rMod*rMod))*rhat[j])
 	
-	drvtiv = [vel[0],vel[1],vel[2],acc[0],acc[1],acc[2]]
+	w = [state[9],state[10],state[11]]
+	wdot = [0,0,0]
+	drvtiv = [vel[0],vel[1],vel[2],acc[0],acc[1],acc[2],w[0],w[1],w[2],wdot[0],wdot[1],wdot[2]]
 	return drvtiv
 	
 def period(a):
@@ -74,8 +76,21 @@ def grabData(path,cursor):
 	inc = inc.strip()
 	inc = inc[16:]
 	inc = float(inc)*(math.pi/180)
+	cursor = cursor + 1
+	omega = linecache.getline(path,cursor)
+	omega = omega.strip()
+	omegaX = omega[14:19]
+	omegaY = omega[20:25]
+	omegaZ = omega[26:31]
+	if omegaX.replace(" ","") == "":
+		omegaX = "10.00"
+	if omegaY.replace(" ","") == "":
+		omegaY = "10.00"
+	if omegaZ.replace(" ","") == "":
+		omegaZ = "10.00"
+	omega = [float(omegaX)*(math.pi/180),float(omegaY)*(math.pi/180),float(omegaZ)*(math.pi/180)]
 	
-	return [name,r_periG,ecc,inc]
+	return [name,r_periG,ecc,inc,omega]
 
 def colorConv(color_s):
 	clrSat = [None]*len(color_s)
