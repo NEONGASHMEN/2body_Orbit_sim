@@ -59,14 +59,14 @@ for i in range(0,no_of_sats):
 	inc = inc_s[i]
 	e = e_s[i]
 	name = name_s[i]	
-	prd = prd_s[i]
+	secnds = tfinal
 	w = res_s[i]	
 	
-	stateout = [None]*prd
-	crdnts = [None]*prd
-	vels = [None]*prd
-	rads = [None]*prd
-	omegas = [None]*prd
+	stateout = [None]*secnds
+	crdnts = [None]*secnds
+	vels = [None]*secnds
+	rads = [None]*secnds
+	omegas = [None]*secnds
 	rp = [r_periG,0,0]
 	rpMod = fns.norm(rp)
 	a = r_periG/(1 - e)
@@ -75,7 +75,7 @@ for i in range(0,no_of_sats):
 	
 	state = [rp[0],rp[1],rp[2],vel_p[0],vel_p[1],vel_p[2],0,0,0,w[0],w[1],w[2]]
 	
-	for z in range(0,prd,step):
+	for z in range(0,secnds,step):
 		tempstate = state.copy()		
 		k = [None]*len(state)		
 		stateout[z] = state.copy()
@@ -100,7 +100,7 @@ for i in range(0,no_of_sats):
 		
 			
 			
-		perc = (z/prd)*100
+		perc = (z/secnds)*100
 		print("Percentage completed: ",perc,"% ",end="\r",flush = True)
 		
 
@@ -128,12 +128,6 @@ for i in range(0,no_of_sats):
 scene1 = canvas(title=' SIMULATION',width=1900,height=1000,align='left')
 
 fns.popUp(grafik,1,satclrTxt,no_of_sats)
-
-curveArr = [None]*no_of_sats
-for i in range(0,no_of_sats):
-	curveArr[i] = curve()
-	for j in range(0,len(crdntData[i])):
-		curveArr[i].append(vector(crdntData[i][j][0]/1000,crdntData[i][j][1]/1000,crdntData[i][j][2]/1000))
 		
 if cnsts.shwErth == 1:
 	erth = sphere(pos=vector(0,0,0),radius=cnsts.radEarth/1000,texture=textures.earth)
@@ -148,13 +142,11 @@ arrow(pos=vector(0,0,0),axis=vector(0,0,-10000),shaftwidth=30,color = color.oran
 satObj = [None]*no_of_sats
 clrSat = fns.colorConv(cnsts.color_s)
 for i in range(0,no_of_sats):
-	satObj[i] = box(pos=vector(0,0,0),length=100,height=100,width=100,color = clrSat[i])
+	satObj[i] = box(pos=vector(0,0,0),length=100,height=100,width=100,color = clrSat[i],make_trail=True,trail_type="points",interval=5,retain=(int(prd_s[i]/5)))
 
 
 for i in range(0,tfinal,cnsts.simStep):
 	for j in range(0,no_of_sats):
-		if i > len(crdntData[j])-1:
-			crdntData[j] = crdntData[j] + crdntData[j]
 		satObj[j].pos = vector(crdntData[j][i][0]/1000,crdntData[j][i][1]/1000,crdntData[j][i][2]/1000)
 		rate(cnsts.simSpeed)
 
